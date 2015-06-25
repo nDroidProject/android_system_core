@@ -193,6 +193,7 @@ int lookup_keyword(const char *s)
         if (!strcmp(s, "ser")) return K_user;
         break;
     case 'w':
+        if (!strcmp(s, "ait")) return K_wait;
         if (!strcmp(s, "rite")) return K_write;
         break;
     }

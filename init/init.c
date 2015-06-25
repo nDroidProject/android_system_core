@@ -480,7 +480,7 @@ void handle_control_message(const char *msg, const char *arg)
 #define MAX_MTD_PARTITIONS 16
 
 static struct {
-    char name[16];
+    char name[32];
     int number;
 } mtd_part_map[MAX_MTD_PARTITIONS];
 
@@ -503,13 +503,13 @@ static void find_mtd_partitions(void)
     pmtdbufp = buf;
     while (pmtdsize > 0) {
         int mtdnum, mtdsize, mtderasesize;
-        char mtdname[16];
+        char mtdname[32];
         mtdname[0] = '\0';
         mtdnum = -1;
         r = sscanf(pmtdbufp, "mtd%d: %x %x %15s",
                    &mtdnum, &mtdsize, &mtderasesize, mtdname);
         if ((r == 4) && (mtdname[0] == '"')) {
-            char *x = strchr(mtdname + 1, '"');
+            char *x = strchr(mtdname + 1, ':');
             if (x) {
                 *x = 0;
             }
@@ -847,6 +847,8 @@ int main(int argc, char **argv)
     drain_action_queue();
 
     INFO("device init\n");
+    /* TODO: Probe uevent rather than just sleep */
+    sleep(20);
     device_fd = device_init();
 
     property_init();

@@ -366,6 +366,17 @@ int do_sysclktz(int nargs, char **args)
     return 0;
 }
 
+int do_wait(int nargs, char **args)
+{
+    INFO("Waiting for device %s...\n", args[1]);
+    while (access(args[1], F_OK)) {
+        INFO("Poll to %s...\n");
+        sleep(1);
+    }
+    INFO("DONE!\n");
+    return 0;
+}
+
 int do_write(int nargs, char **args)
 {
     return write_file(args[1], args[2]);
